@@ -5,7 +5,7 @@ const useConfig = {
   dirPath: "./",
   environment: "ci",
   debug: false,
-  json: true,
+  json: false,
 };
 
 function config() {
