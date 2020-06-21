@@ -35,7 +35,7 @@ function buildTable({
   return data;
 }
 
-function parse({ payload, sort }) {
+function parse({ payload, sort, json }) {
   const { metadata, advisories } = payload;
 
   const { vulnerabilities } = metadata;
@@ -118,6 +118,11 @@ function parse({ payload, sort }) {
 
   if (sort && sort === "asc") {
     sortedTables = arraysModule.reverseObjectByKeys(sortedTables);
+  }
+
+  // Return all tables squashed into a string of tables
+  if (!json) {
+    return arraysModule.objectToString(sortedTables);
   }
 
   return sortedTables;

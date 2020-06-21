@@ -5,6 +5,7 @@ const useConfig = {
   dirPath: "./",
   environment: "ci",
   debug: false,
+  json: true,
 };
 
 function config() {
@@ -41,6 +42,7 @@ function audit() {
         const data = parserModule.parse({
           payload: completePayload,
           sort: useConfig.sort,
+          json: useConfig.json,
         });
         resolve(data);
       } catch (e) {
@@ -63,12 +65,14 @@ function prettyAudit(...args) {
         environment,
         sort,
         debug,
+        json,
       } = commandsModule.parseCommands(commands);
 
       useConfig.dirPath = dirPath || useConfig.dirPath;
       useConfig.environment = environment || useConfig.environment;
       useConfig.sort = sort || useConfig.sort;
       useConfig.debug = debug || useConfig.debug;
+      useConfig.json = json || useConfig.json;
     }
   }
 
