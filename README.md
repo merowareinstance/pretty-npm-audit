@@ -1,11 +1,6 @@
 # pretty-audit
 A Nodejs library that provides a pretty version of npm audits
 
-Params
-
-sort=low - Sorts the tables by severity where the leasts severe goes first
-sort=high - Sorts the talbes by severity where the most severe goes first
-
 ```
 ╔═════════════════════╤═════════════════════════════════════════════════════════════════════════════╗
 ║ Title               │ Regular Expression Denial of Service                                        ║

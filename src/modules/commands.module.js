@@ -8,7 +8,7 @@
  */
 function parseCommands(commands) {
   if (commands && typeof commands === "object") {
-    const { dirPath, environment, sort, debug } = commands;
+    const { dirPath, environment, sort, debug, json } = commands;
     // TODO: Go through and do param validation e.g make sure dirpath is an actual path
 
     return {
@@ -16,6 +16,7 @@ function parseCommands(commands) {
       environment,
       sort,
       debug,
+      json,
     };
   }
   return {};
