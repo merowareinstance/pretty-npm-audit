@@ -1,5 +1,5 @@
 {
-  "name": "npm-audit-pretty",
+  "name": "pretty-audit",
   "version": "1.0.1",
   "description": "A Nodejs library that provides a pretty version of npm audits",
   "scripts": {
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/legolamel/npm-audit-pretty.git"
+    "url": "git+https://github.com/legolamel/pretty-audit.git"
   },
   "author": "Edward Romero",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/legolamel/npm-audit-pretty/issues"
+    "url": "https://github.com/legolamel/pretty-audit/issues"
   },
-  "homepage": "https://github.com/legolamel/npm-audit-pretty#readme",
+  "homepage": "https://github.com/legolamel/pretty-audit#readme",
   "devDependencies": {
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "^18.2.0",
