@@ -2,8 +2,6 @@ name: Pretty Audit CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 jobs:
   ci:
     runs-on: ubuntu-latest
