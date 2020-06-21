@@ -120,7 +120,7 @@ function parse({ payload, sort }) {
     sortedTables = arraysModule.reverseObjectByKeys(sortedTables);
   }
 
-  return arraysModule.objectToString(sortedTables);
+  return sortedTables;
 }
 
 module.exports = {
