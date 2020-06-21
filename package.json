@@ -1,6 +1,6 @@
 {
   "name": "npm-audit-pretty",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Nodejs library that provides a pretty version of npm audits",
   "scripts": {
     "dev": "NODE_ENV=development nodemon index.js",
