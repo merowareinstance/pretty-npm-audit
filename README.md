@@ -93,11 +93,11 @@ A json object hash with severities as keys and arrays of audit strings similar t
 
 ```json
 { 
-  critical: [],
-  high: [],
-  moderate: [],
-  low: [],
-  info: [] 
+  "critical": [],
+  "high": [],
+  "moderate": [],
+  "low": [],
+  "info": [] 
 }
 ```
 
