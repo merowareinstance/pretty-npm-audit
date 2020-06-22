@@ -13,7 +13,7 @@
     "url": "git+https://github.com/legolamel/pretty-audit.git"
   },
   "author": "Edward Romero",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/legolamel/pretty-audit/issues"
   },
