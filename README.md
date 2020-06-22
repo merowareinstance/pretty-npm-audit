@@ -1,6 +1,51 @@
-# pretty-audit
+# pretty-npm-audit
+
 A Nodejs library that provides a pretty version of npm audits
 
+## Install
+
+```
+$ npm install pretty-npm-audit
+```
+
+## Params
+
+### `dirPath`
+Directory path of the project to audit 
+(Defaults current directory)
+
+### `environment`
+Environment of the project 
+(Currently Unimplemented)
+
+### `sort`
+Sort output audits ascending from least to most serverity or descending from most to least severity.
+Options: 
+    asc - (String) Ascending severity low to high 
+    dsc - (String) Descending severity high to low (Default)
+
+### `debug`
+Whether to output logging of action running. 
+(Default false)
+
+## Usage
+
+### Example 1
+```js
+const prettyNpmAudit = require("pretty-audit");
+
+prettyNpmAudit({
+    dirPath: "./vulnerable-package",
+    sort: "asc",
+  });
+  
+
+const results = await prettyNpmAudit.audit();
+```
+
+This produces:
+
+A string containing a list of formatted tables in ascending order depending on the sort string
 ```
 ╔═════════════════════╤═════════════════════════════════════════════════════════════════════════════╗
 ║ Title               │ Regular Expression Denial of Service                                        ║
@@ -22,51 +67,39 @@ A Nodejs library that provides a pretty version of npm audits
 ╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
 ║ More Info           │ https://npmjs.com/advisories/1515                                           ║
 ╚═════════════════════╧═════════════════════════════════════════════════════════════════════════════╝
-
-╔═════════════════════╤═════════════════════════════════════════════════════════════════════════════╗
-║ Title               │ Information Exposure                                                        ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Level               │ moderate                                                                    ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Package             │ apollo-server-micro                                                         ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Overview            │ Versions of `apollo-server-micro` prior to 2.4.12 are vulnerable to Informa ║
-║                     │ tion Exposure. The package does not properly enforce validation rules when  ║
-║                     │ creating subscription servers, which includes a `NoInstrospection` rule for ║
-║                     │ the Websocket. This leaks the GraphQL schema types, their relations and hum ║
-║                     │ an-readable names.   More information can be found on the references.       ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Vulnerable Versions │ <2.4.12                                                                     ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Patched Versions    │ >=2.4.12                                                                    ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Recommendation      │ Upgrade to version 2.14.2 or later.                                         ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ More Info           │ https://npmjs.com/advisories/1535                                           ║
-╚═════════════════════╧═════════════════════════════════════════════════════════════════════════════╝
-
-╔═════════════════════╤═════════════════════════════════════════════════════════════════════════════╗
-║ Title               │ Prototype Pollution                                                         ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Level               │ low                                                                         ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Package             │ yargs-parser                                                                ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Overview            │ Affected versions of `yargs-parser` are vulnerable to prototype pollution.  ║
-║                     │ Arguments are not properly sanitized, allowing an attacker to modify the pr ║
-║                     │ ototype of `Object`, causing the addition or modification of an existing pr ║
-║                     │ operty that will exist on all objects.                                      ║
-║                     │ Parsing the argument `--foo.__proto__.bar baz'` adds a `bar` property with  ║
-║                     │ value `baz` to all objects. This is only exploitable if attackers have cont ║
-║                     │ rol over the arguments being passed to `yargs-parser`.                      ║
-║                     │                                                                             ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Vulnerable Versions │ <13.1.2 || >=14.0.0 <15.0.1 || >=16.0.0 <18.1.2                             ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Patched Versions    │ >=13.1.2 <14.0.0 || >=15.0.1 <16.0.0 || >=18.1.2                            ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ Recommendation      │ Upgrade to versions 13.1.2, 15.0.1, 18.1.1 or later.                        ║
-╟─────────────────────┼─────────────────────────────────────────────────────────────────────────────╢
-║ More Info           │ https://npmjs.com/advisories/1500                                           ║
-╚═════════════════════╧═════════════════════════════════════════════════════════════════════════════╝
 ```
+
+### Example 2
+```js
+const prettyNpmAudit = require("pretty-audit");
+
+prettyNpmAudit({
+    dirPath: "./vulnerable-package",
+    json: true
+  });
+  
+
+const results = await prettyNpmAudit.audit();
+```
+
+This produces:
+
+A json object hash with severities as keys and arrays of audit strings similar to the ones on example 1. The keys are sorted depending if sort key is provided.
+
+```json
+{ 
+  critical: [],
+  high: [],
+  moderate: [],
+  low: [],
+  info: [] 
+}
+```
+
+## Contributing
+
+TBD
+
+## License
+
+Licensed under [MIT](./LICENSE).
