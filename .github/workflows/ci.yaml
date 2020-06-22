@@ -12,4 +12,3 @@ jobs:
       with:
         node-version: '12.x'
     - run: npm ci
-    - run: npm run start -- dirPath=./vulnerable-project/
