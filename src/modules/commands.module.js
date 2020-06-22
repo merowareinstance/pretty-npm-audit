@@ -14,7 +14,6 @@ function parseCommands(commands) {
     // TODO: Go through and do param validation e.g make sure dirpath is an actual path
   
     if (dirPath && !fs.existsSync(dirPath)) {
-      console.log('netered')
       throw new Error(`File path could not be found ${dirPath}`);
     }
 
