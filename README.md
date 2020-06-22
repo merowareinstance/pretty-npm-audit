@@ -1,5 +1,4 @@
 # pretty-npm-audit
-
 A Nodejs library that provides a pretty version of npm audits
 
 ## Install
@@ -10,22 +9,28 @@ $ npm install pretty-npm-audit
 
 ## Params
 
-### `dirPath`
-Directory path of the project to audit 
+- `dirPath`
+
+   Directory path of the project to audit 
 (Defaults current directory)
 
-### `environment`
-Environment of the project 
+- `environment`
+
+   Environment of the project 
 (Currently Unimplemented)
 
-### `sort`
-Sort output audits ascending from least to most serverity or descending from most to least severity.
-Options: 
-    asc - (String) Ascending severity low to high 
-    dsc - (String) Descending severity high to low (Default)
+- `sort`
 
-### `debug`
-Whether to output logging of action running. 
+   Sort output audits ascending from least to most serverity or descending from most to least severity.
+
+  Options:
+
+      asc - (String) Ascending severity low to high 
+      dsc - (String) Descending severity high to low (Default)
+
+- `debug`
+
+  Whether to output logging of action running. 
 (Default false)
 
 ## Usage

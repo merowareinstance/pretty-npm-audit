@@ -68,11 +68,12 @@ function prettyAudit(...args) {
         json,
       } = commandsModule.parseCommands(commands);
 
-      useConfig.dirPath = dirPath || useConfig.dirPath;
-      useConfig.environment = environment || useConfig.environment;
-      useConfig.sort = sort || useConfig.sort;
-      useConfig.debug = debug || useConfig.debug;
-      useConfig.json = json || useConfig.json;
+      useConfig.dirPath = dirPath === undefined ? useConfig.dirPath : dirPath;
+      useConfig.environment =
+        environment === undefined ? useConfig.environment : environment;
+      useConfig.sort = sort === undefined ? useConfig.sort : sort;
+      useConfig.debug = debug === undefined ? useConfig.debug : debug;
+      useConfig.json = json === undefined ? useConfig.json : json;
     }
   }
 
