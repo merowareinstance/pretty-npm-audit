@@ -32,7 +32,8 @@ function audit() {
       }
     });
 
-    proc.stderr.on("data", () => {
+    proc.stderr.on("data", (data) => {
+      logger.info(`${data.toString().trim()} : Path provided ${useConfig.dirPath}`);
       reject(new Error("Received error while parsing npm audit"));
     });
 
@@ -77,6 +78,7 @@ function prettyAudit(...args) {
     }
   }
 
+  // Reset config if changed
   logger.setConfig({
     enabled: useConfig.debug,
     prettyPrint: useConfig.debug,

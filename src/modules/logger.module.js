@@ -2,7 +2,11 @@ const pino = require("pino");
 
 class Logger {
   constructor() {
-    this.logger = pino();
+    // Disable logging by default
+    this.logger = pino({
+      enabled: false,
+      prettyPrint: false,
+    });
   }
 
   setConfig(config) {
