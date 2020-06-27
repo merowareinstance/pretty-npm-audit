@@ -125,14 +125,22 @@ A json object hash with severities as keys and arrays of audit json data used to
 
 ```json
 { 
-  "critical": [
-    {
-
-    }
-  ],
+  "critical": [],
   "high": [],
   "moderate": [],
-  "low": [],
+  "low": [
+    { 
+      "title": "Prototype Pollution",
+       "moduleName": "yargs-parser",
+       "vulnerableVersions": "<13.1.2 || >=14.0.0 <15.0.1 || >=16.0.0 <18.1.2",
+       "patchedVersions": ">=13.1.2 <14.0.0 || >=15.0.1 <16.0.0 || >=18.1.2",
+       "overview":
+        "Affected versions of `yargs-parser` are vulnerable to prototype pollution. Arguments are not properly sanitized, allowing an attacker to modify the prototype of `Object`, causing the addition or modification of an existing property that will exist on all objects.  \nParsing the argument `--foo.__proto__.bar baz'` adds a `bar` property with value `baz` to all objects. This is only exploitable if attackers have control over the arguments being passed to `yargs-parser`.\n",
+       "recommendation": "Upgrade to versions 13.1.2, 15.0.1, 18.1.1 or later.",
+       "url": "https://npmjs.com/advisories/1500",
+       "severity": "low" 
+    }
+  ],
   "info": [] 
 }
 ```
