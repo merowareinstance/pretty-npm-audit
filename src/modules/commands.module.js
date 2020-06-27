@@ -4,13 +4,14 @@ const fs = require("fs");
  * Parses commands into supported ones and ignores the rest
  * @param {Object} commands
  * @param {String} commands.dirPath
- * @param {String} commands.environment
  * @param {String} commands.sort
  * @param {Boolean} commands.debug
+ * @param {Boolean} commands.json
+ * @param {Boolean} commands.jsonPretty
  */
 function parseCommands(commands) {
   if (commands && typeof commands === "object") {
-    const { dirPath, environment, sort, debug, json } = commands;
+    const { dirPath, sort, debug, json, jsonPretty } = commands;
     // TODO: Go through and do param validation e.g make sure dirpath is an actual path
   
     if (dirPath && !fs.existsSync(dirPath)) {
@@ -19,10 +20,10 @@ function parseCommands(commands) {
 
     return {
       dirPath,
-      environment,
       sort,
       debug,
       json,
+      jsonPretty,
     };
   }
   return {};

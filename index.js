@@ -3,9 +3,9 @@ const { parserModule, commandsModule, logger } = require("./src/modules");
 
 const useConfig = {
   dirPath: "./",
-  environment: "ci",
   debug: false,
   json: false,
+  jsonPretty: false,
 };
 
 function config() {
@@ -44,6 +44,7 @@ function audit() {
           payload: completePayload,
           sort: useConfig.sort,
           json: useConfig.json,
+          jsonPretty: useConfig.jsonPretty,
         });
         resolve(data);
       } catch (e) {
@@ -63,25 +64,28 @@ function prettyAudit(...args) {
     if (commands) {
       const {
         dirPath,
-        environment,
         sort,
         debug,
         json,
+        jsonPretty,
       } = commandsModule.parseCommands(commands);
 
+      if(json !== undefined && jsonPretty !== undefined) {
+        throw new Error('Please provide one option between json and jsonPretty');
+      }
+
       useConfig.dirPath = dirPath === undefined ? useConfig.dirPath : dirPath;
-      useConfig.environment =
-        environment === undefined ? useConfig.environment : environment;
       useConfig.sort = sort === undefined ? useConfig.sort : sort;
       useConfig.debug = debug === undefined ? useConfig.debug : debug;
       useConfig.json = json === undefined ? useConfig.json : json;
+      useConfig.jsonPretty = jsonPretty === undefined ? useConfig.jsonPretty : jsonPretty;
     }
   }
 
   // Reset config if changed
   logger.setConfig({
-    enabled: useConfig.debug,
-    prettyPrint: useConfig.debug,
+    enabled: !!useConfig.debug,
+    prettyPrint: !!useConfig.debug,
   });
 }
 
