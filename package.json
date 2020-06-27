@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/legolamel/pretty-npm-audit.git"
+    "url": "git+https://github.com/meroware/pretty-npm-audit.git"
   },
   "author": "Edward Romero",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/legolamel/pretty-npm-audit/issues"
+    "url": "https://github.com/meroware/pretty-npm-audit/issues"
   },
-  "homepage": "https://github.com/legolamel/pretty-npm-audit#readme",
+  "homepage": "https://github.com/meroware/pretty-npm-audit#readme",
   "devDependencies": {
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "^18.2.0",
