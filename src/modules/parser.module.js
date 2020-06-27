@@ -35,7 +35,7 @@ function buildTable({
   return data;
 }
 
-function parse({ payload, sort, json }) {
+function parse({ payload, sort, json, jsonPretty }) {
   const { metadata, advisories } = payload;
 
   const { vulnerabilities } = metadata;
@@ -66,8 +66,18 @@ function parse({ payload, sort, json }) {
 
   const advisoryNumbers = Object.keys(advisories);
 
+  // TODO: Cleanup how we create this tables so that we don't have to have
+  // two identical root level objects
   // Defaults to dsc - highest to lowest priority
-  const advisoryTables = {
+  const advisoryTablesJson = {
+    critical: [],
+    high: [],
+    moderate: [],
+    low: [],
+    info: [],
+  };
+
+  const advisoryTablesJsonPretty = {
     critical: [],
     high: [],
     moderate: [],
@@ -99,7 +109,7 @@ function parse({ payload, sort, json }) {
       severity,
     });
 
-    const message = buildTable({
+    const cleanJson = {
       title,
       moduleName,
       vulnerableVersions,
@@ -108,20 +118,22 @@ function parse({ payload, sort, json }) {
       recommendation,
       url,
       severity,
-    });
+    };
 
-    advisoryTables[severity].push(message);
+    advisoryTablesJson[severity].push(cleanJson);
+
+    advisoryTablesJsonPretty[severity].push(buildTable(cleanJson));
   });
 
   // Defaults to dsc - highest to lowest priority
-  let sortedTables = advisoryTables;
+  let sortedTables = json === true ? advisoryTablesJson : advisoryTablesJsonPretty;
 
   if (sort && sort === "asc") {
     sortedTables = arraysModule.reverseObjectByKeys(sortedTables);
   }
 
   // Return all tables squashed into a string of tables
-  if (!json) {
+  if (!jsonPretty && !json) {
     return arraysModule.objectToString(sortedTables);
   }
 

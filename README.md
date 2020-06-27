@@ -9,17 +9,12 @@ $ npm install pretty-npm-audit
 
 ## Params
 
-- `dirPath`
+- `dirPath` (String)
 
    Directory path of the project to audit 
 (Defaults current directory)
 
-- `environment`
-
-   Environment of the project 
-(Currently Unimplemented)
-
-- `sort`
+- `sort` (String)
 
    Sort output audits ascending from least to most serverity or descending from most to least severity.
 
@@ -27,6 +22,17 @@ $ npm install pretty-npm-audit
 
       asc - (String) Ascending severity low to high 
       dsc - (String) Descending severity high to low (Default)
+
+- `jsonPretty` (Boolean)
+
+  Return a json object hash with severities as keys and arrays of audit strings in pretty tabular format. The keys are sorted depending if sort key is provided.
+  (Default: false)
+
+- `json` (Boolean)
+    
+    Return a json object hash with severities as keys and arrays of audit data used to populate pretty tables in json format. The keys are sorted depending if sort key is provided.
+  (Default: false)
+
 
 - `debug`
 
@@ -41,7 +47,6 @@ const prettyNpmAudit = require("pretty-audit");
 
 prettyNpmAudit({
     dirPath: "./vulnerable-package",
-    sort: "asc",
   });
   
 
@@ -80,7 +85,7 @@ const prettyNpmAudit = require("pretty-audit");
 
 prettyNpmAudit({
     dirPath: "./vulnerable-package",
-    json: true
+    jsonPretty: true,
   });
   
 
@@ -97,6 +102,45 @@ A json object hash with severities as keys and arrays of audit strings similar t
   "high": [],
   "moderate": [],
   "low": [],
+  "info": [] 
+}
+```
+
+### Example 3
+```js
+const prettyNpmAudit = require("pretty-audit");
+
+prettyNpmAudit({
+    dirPath: "./vulnerable-package",
+    json: true,
+  });
+  
+
+const results = await prettyNpmAudit.audit();
+```
+
+This produces:
+
+A json object hash with severities as keys and arrays of audit json data used to populate the pretty tables described in example 1 and 2. The root level serverity keys can be sorted depending if sort key is provided.
+
+```json
+{ 
+  "critical": [],
+  "high": [],
+  "moderate": [],
+  "low": [
+    { 
+      "title": "Prototype Pollution",
+       "moduleName": "yargs-parser",
+       "vulnerableVersions": "<13.1.2 || >=14.0.0 <15.0.1 || >=16.0.0 <18.1.2",
+       "patchedVersions": ">=13.1.2 <14.0.0 || >=15.0.1 <16.0.0 || >=18.1.2",
+       "overview":
+        "Affected versions of `yargs-parser` are vulnerable to prototype pollution. Arguments are not properly sanitized, allowing an attacker to modify the prototype of `Object`, causing the addition or modification of an existing property that will exist on all objects.  \nParsing the argument `--foo.__proto__.bar baz'` adds a `bar` property with value `baz` to all objects. This is only exploitable if attackers have control over the arguments being passed to `yargs-parser`.\n",
+       "recommendation": "Upgrade to versions 13.1.2, 15.0.1, 18.1.1 or later.",
+       "url": "https://npmjs.com/advisories/1500",
+       "severity": "low" 
+    }
+  ],
   "info": [] 
 }
 ```
