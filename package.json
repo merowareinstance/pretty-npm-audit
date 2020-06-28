@@ -4,9 +4,11 @@
   "description": "A Nodejs library that provides a pretty version of npm audits",
   "scripts": {
     "dev": "NODE_ENV=development nodemon index.js",
-    "start": "node index.js",
     "lint": "eslint --ext .js ./",
-    "lint:fix": "eslint --fix --ext .js ./"
+    "lint:fix": "eslint --fix --ext .js ./",
+    "test": "npm run test:unit",
+    "test:unit": "TEST_ENV=unit jest",
+    "test:integration": "TEST_ENV=integration jest"
   },
   "repository": {
     "type": "git",
