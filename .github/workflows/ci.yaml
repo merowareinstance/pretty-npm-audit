@@ -2,6 +2,11 @@ name: Pretty Audit CI
 on:
   push:
     branches: [ master ]
+  paths-ignore:
+    README.md
+    LICENSE
+    .github/CODEOWNERS
+    .github/PULL_REQUEST_TEMPLATE.md
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -12,3 +17,4 @@ jobs:
       with:
         node-version: '12.x'
     - run: npm ci
+    - run: npm run lint
