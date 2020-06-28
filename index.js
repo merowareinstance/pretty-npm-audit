@@ -16,6 +16,10 @@ function audit() {
   return new Promise((resolve, reject) => {
     let npmCommands = ["audit", "--json"];
 
+    if (useConfig.auditLevel) {
+      npmCommands = npmCommands.concat(["--audit-level", useConfig.auditLevel]);
+    }
+
     if (useConfig.dirPath) {
       npmCommands = npmCommands.concat(["--prefix", useConfig.dirPath]);
     }
@@ -33,7 +37,9 @@ function audit() {
     });
 
     proc.stderr.on("data", (data) => {
-      logger.info(`${data.toString().trim()} : Path provided ${useConfig.dirPath}`);
+      logger.info(
+        `${data.toString().trim()} : Path provided ${useConfig.dirPath}`
+      );
       reject(new Error("Received error while parsing npm audit"));
     });
 
@@ -68,17 +74,23 @@ function prettyAudit(...args) {
         debug,
         json,
         jsonPretty,
+        auditLevel,
       } = commandsModule.parseCommands(commands);
 
-      if(json !== undefined && jsonPretty !== undefined) {
-        throw new Error('Please provide one option between json and jsonPretty');
+      if (json !== undefined && jsonPretty !== undefined) {
+        throw new Error(
+          "Please provide one option between json and jsonPretty"
+        );
       }
 
       useConfig.dirPath = dirPath === undefined ? useConfig.dirPath : dirPath;
       useConfig.sort = sort === undefined ? useConfig.sort : sort;
       useConfig.debug = debug === undefined ? useConfig.debug : debug;
       useConfig.json = json === undefined ? useConfig.json : json;
-      useConfig.jsonPretty = jsonPretty === undefined ? useConfig.jsonPretty : jsonPretty;
+      useConfig.jsonPretty =
+        jsonPretty === undefined ? useConfig.jsonPretty : jsonPretty;
+      useConfig.auditLevel =
+        auditLevel === undefined ? useConfig.auditLevel : auditLevel;
     }
   }
 

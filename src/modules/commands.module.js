@@ -1,5 +1,7 @@
 const fs = require("fs");
 
+const auditLevels = ["low", "moderate", "high", "critical"];
+
 /**
  * Parses commands into supported ones and ignores the rest
  * @param {Object} commands
@@ -11,11 +13,15 @@ const fs = require("fs");
  */
 function parseCommands(commands) {
   if (commands && typeof commands === "object") {
-    const { dirPath, sort, debug, json, jsonPretty } = commands;
+    const { dirPath, sort, debug, json, jsonPretty, auditLevel } = commands;
     // TODO: Go through and do param validation e.g make sure dirpath is an actual path
-  
+
     if (dirPath && !fs.existsSync(dirPath)) {
       throw new Error(`File path could not be found ${dirPath}`);
+    }
+
+    if (auditLevel && !auditLevels.includes(auditLevel)) {
+      throw new Error(`Audit Level needs to be one of ${auditLevels}`);
     }
 
     return {
@@ -24,6 +30,7 @@ function parseCommands(commands) {
       debug,
       json,
       jsonPretty,
+      auditLevel,
     };
   }
   return {};
