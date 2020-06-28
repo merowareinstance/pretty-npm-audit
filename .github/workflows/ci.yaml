@@ -1,7 +1,7 @@
 name: Pretty Audit CI
 on:
   push:
-    branches: [ master ]
+    branches-ignore: ['master']
   paths-ignore:
     README.md
     LICENSE
