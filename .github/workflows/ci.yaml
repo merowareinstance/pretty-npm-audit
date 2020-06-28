@@ -1,4 +1,4 @@
-name: Pretty Audit CI
+name: CI
 on:
   push:
     branches-ignore:
@@ -19,3 +19,4 @@ jobs:
         node-version: '12.x'
     - run: npm ci
     - run: npm run lint
+    - run: npm run test
