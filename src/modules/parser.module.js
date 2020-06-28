@@ -126,7 +126,8 @@ function parse({ payload, sort, json, jsonPretty }) {
   });
 
   // Defaults to dsc - highest to lowest priority
-  let sortedTables = json === true ? advisoryTablesJson : advisoryTablesJsonPretty;
+  let sortedTables =
+    json === true ? advisoryTablesJson : advisoryTablesJsonPretty;
 
   if (sort && sort === "asc") {
     sortedTables = arraysModule.reverseObjectByKeys(sortedTables);
