@@ -36,6 +36,11 @@ $ npm install pretty-npm-audit
     Return a json object hash with severities as keys and arrays of audit data used to populate pretty tables in json format. The keys are sorted depending if sort key is provided.
   (Default: false)
 
+- `auditLevel` (String)
+
+  The minimum level of audit to get
+(Default low)
+Options: Any of the levels in array ["low", "moderate", "high", "critical"];
 
 - `debug`
 
