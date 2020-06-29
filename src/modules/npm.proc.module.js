@@ -10,8 +10,8 @@ function onData(data) {
   }
 }
 
-function onError(data) {
-  logger.info(`${data.toString().trim()} : Path provided ${useConfig.dirPath}`);
+function onError(data, dirPath) {
+  logger.info(`${data.toString().trim()} : Path provided ${dirPath}`);
   throw new Error("Received error while parsing npm audit");
 }
 

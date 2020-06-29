@@ -37,7 +37,7 @@ function audit() {
 
     proc.stderr.on("data", (data) => {
       try {
-        npmProcModule.onError(data);
+        npmProcModule.onError(data, useConfig.dirPath);
       } catch (e) {
         reject(e);
       }
