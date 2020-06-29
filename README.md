@@ -1,4 +1,7 @@
 # pretty-npm-audit
+
+![CI](https://github.com/meroware/pretty-npm-audit/workflows/CI/badge.svg)
+
 A Nodejs library that provides a pretty version of npm audits
 
 ## Install
