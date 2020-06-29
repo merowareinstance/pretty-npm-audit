@@ -13,34 +13,34 @@ class Logger {
     this.logger = pino(config);
   }
 
-  info() {
+  info(...args) {
     // eslint-disable-next-line prefer-rest-params
-    this.logger.info(arguments);
+    this.logger.info(args);
   }
 
-  warn() {
+  warn(...args) {
     // eslint-disable-next-line prefer-rest-params
-    this.logger.warn(arguments);
+    this.logger.warn(args);
   }
 
-  error() {
+  error(...args) {
     // eslint-disable-next-line prefer-rest-params
-    this.logger.error(arguments);
+    this.logger.error(args);
   }
 
-  debug() {
+  debug(...args) {
     // eslint-disable-next-line prefer-rest-params
-    this.logger.debug(arguments);
+    this.logger.debug(args);
   }
 
-  critical() {
+  critical(...args) {
     // eslint-disable-next-line prefer-rest-params
-    this.logger.critical(arguments);
+    this.logger.critical(args);
   }
 
-  fatal() {
+  fatal(...args) {
     // eslint-disable-next-line prefer-rest-params
-    this.logger.fatal(arguments);
+    this.logger.fatal(args);
   }
 }
 

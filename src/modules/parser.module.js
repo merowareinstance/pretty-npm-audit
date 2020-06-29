@@ -122,11 +122,12 @@ function parse({ payload, sort, json, jsonPretty }) {
 
     advisoryTablesJson[severity].push(cleanJson);
 
-    advisoryTablesJsonPretty[severity].push(buildTable(cleanJson));
+    advisoryTablesJsonPretty[severity].push(this.buildTable(cleanJson));
   });
 
   // Defaults to dsc - highest to lowest priority
-  let sortedTables = json === true ? advisoryTablesJson : advisoryTablesJsonPretty;
+  let sortedTables =
+    json === true ? advisoryTablesJson : advisoryTablesJsonPretty;
 
   if (sort && sort === "asc") {
     sortedTables = arraysModule.reverseObjectByKeys(sortedTables);
@@ -142,4 +143,5 @@ function parse({ payload, sort, json, jsonPretty }) {
 
 module.exports = {
   parse,
+  buildTable,
 };
