@@ -7,6 +7,10 @@ function resetPayload() {
   payload = "";
 }
 
+function getPayload() {
+  return payload;
+}
+
 function onData(data) {
   try {
     payload += data.toString().trim();
@@ -40,4 +44,5 @@ module.exports = {
   onError,
   onClose,
   resetPayload,
+  getPayload,
 };

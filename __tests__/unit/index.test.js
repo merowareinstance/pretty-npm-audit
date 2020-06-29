@@ -101,37 +101,6 @@ describe("Main Index Unit Test", () => {
       );
       expect(spawnStub.on).toHaveBeenCalledWith("close", expect.toBeFunction());
     });
-
-    test("Should return error if npmProcModule on data throws", async () => {
-      jest.spyOn(childProcess, "spawn").mockImplementationOnce(() => spawnStub);
-      commandsModule.parseCommands.mockImplementationOnce(() => ({
-        dirPath: "./",
-        auditLevel: "",
-      }));
-      prettyAudit({
-        dirPath: "./",
-        auditLevel: "",
-      });
-      const errorToThrow = new Error("Failed on npm proc module data");
-      spawnStub.stderr.on.mockRejectedValueOnce(errorToThrow);
-      expect(prettyAudit.audit()).rejects.toEqual(errorToThrow);
-
-      expect(childProcess.spawn).toHaveBeenCalledWith("npm", [
-        "audit",
-        "--json",
-        "--prefix",
-        "./",
-      ]);
-      expect(spawnStub.stdout.on).toHaveBeenCalledWith(
-        "data",
-        expect.toBeFunction()
-      );
-      expect(spawnStub.stderr.on).toHaveBeenCalledWith(
-        "data",
-        expect.toBeFunction()
-      );
-      expect(spawnStub.on).toHaveBeenCalledWith("close", expect.toBeFunction());
-    });
   });
 
   describe("prettyAudit", () => {

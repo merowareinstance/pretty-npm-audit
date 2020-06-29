@@ -1,5 +1,4 @@
 jest.unmock("../../parser.module");
-const { table } = require("table");
 const logger = require("../../logger.module");
 const arraysModule = require("../../arrays.module");
 const parserModule = require("../../parser.module");
@@ -148,6 +147,39 @@ describe("Parser Module Unit Test", () => {
         info: [],
         low: [],
       });
+      expect(logger.info).toHaveBeenCalledTimes(6);
+    });
+
+    test("Given the data provided it should return json data used to populate pretty tables and not call logger infos for vulnerabilities", () => {
+      payload.metadata.vulnerabilities = {};
+      const data = parserModule.parse({
+        payload,
+        sort: undefined,
+        json: true,
+      });
+
+      expect(arraysModule.objectToString).not.toHaveBeenCalled();
+      expect(arraysModule.reverseObjectByKeys).not.toHaveBeenCalled();
+      expect(data).toEqual({
+        critical: [],
+        high: [
+          {
+            title: "some title",
+            moduleName: "some moduleName",
+            vulnerableVersions: "some vulnerableVersions",
+            patchedVersions: "some patchedVersions",
+            overview: "some overview",
+            recommendation: "some recommendation",
+            url: "some url",
+            severity: "high",
+          },
+        ],
+        moderate: [],
+        info: [],
+        low: [],
+      });
+
+      expect(logger.info).toHaveBeenCalledTimes(1);
     });
   });
 });
