@@ -3,11 +3,6 @@ on:
   push:
     branches-ignore:
       - master
-    paths-ignore:
-      - 'README.md'
-      - 'LICENSE'
-      - '.github/CODEOWNERS'
-      - '.github/PULL_REQUEST_TEMPLATE.md'
 jobs:
   ci:
     runs-on: ubuntu-latest
