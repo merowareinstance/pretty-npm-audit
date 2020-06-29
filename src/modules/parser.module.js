@@ -122,7 +122,7 @@ function parse({ payload, sort, json, jsonPretty }) {
 
     advisoryTablesJson[severity].push(cleanJson);
 
-    advisoryTablesJsonPretty[severity].push(buildTable(cleanJson));
+    advisoryTablesJsonPretty[severity].push(this.buildTable(cleanJson));
   });
 
   // Defaults to dsc - highest to lowest priority

@@ -1,10 +1,15 @@
 const parserModule = require("./parser.module");
 const logger = require("./logger.module");
 
+let payload = "";
+
+function resetPayload() {
+  payload = "";
+}
+
 function onData(data) {
   try {
-    const dataToParse = data.toString().trim();
-    return dataToParse;
+    payload += data.toString().trim();
   } catch (e) {
     throw new Error("Could not convert partial data to string");
   }
@@ -15,7 +20,7 @@ function onError(data, dirPath) {
   throw new Error("Received error while parsing npm audit");
 }
 
-function onClose(payload, useConfig) {
+function onClose(useConfig) {
   try {
     const completePayload = JSON.parse(payload);
     const data = parserModule.parse({
@@ -34,4 +39,5 @@ module.exports = {
   onData,
   onError,
   onClose,
+  resetPayload,
 };

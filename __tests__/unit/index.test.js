@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 jest.unmock("../../index");
-let spawn;
+let childProcess;
 let npmProcModule;
 let commandsModule;
 let logger;
@@ -9,7 +9,7 @@ let prettyAudit;
 function resetSetup() {
   // Some tests depend on a clean config so we reset modules to make sure they are clear in cache
   jest.resetModules();
-  ({ spawn } = require("child_process"));
+  childProcess = require("child_process");
   ({ commandsModule, logger, npmProcModule } = require("../../src/modules"));
   prettyAudit = require("../../index");
 }
@@ -29,7 +29,110 @@ describe("Main Index Unit Test", () => {
     });
   });
 
-  describe("audit", () => {});
+  describe("audit", () => {
+    let spawnStub;
+    beforeEach(() => {
+      spawnStub = {
+        stdout: {
+          on: jest.fn((command, callback) => callback("some good data")),
+        },
+        stderr: {
+          on: jest.fn((command, callback) => callback("some error data")),
+        },
+        on: jest.fn((command, callback) => callback()),
+      };
+    });
+
+    test("Should not add prefix or audit level if not defined in config", async () => {
+      jest.spyOn(childProcess, "spawn").mockImplementationOnce(() => spawnStub);
+      commandsModule.parseCommands.mockImplementationOnce(() => ({
+        dirPath: "",
+      }));
+      prettyAudit({
+        dirPath: "",
+      });
+
+      await prettyAudit.audit();
+
+      expect(childProcess.spawn).toHaveBeenCalledWith("npm", [
+        "audit",
+        "--json",
+      ]);
+      expect(spawnStub.stdout.on).toHaveBeenCalledWith(
+        "data",
+        expect.toBeFunction()
+      );
+      expect(spawnStub.stderr.on).toHaveBeenCalledWith(
+        "data",
+        expect.toBeFunction()
+      );
+      expect(spawnStub.on).toHaveBeenCalledWith("close", expect.toBeFunction());
+    });
+
+    test("Should add prefix or audit level if defined in config", async () => {
+      jest.spyOn(childProcess, "spawn").mockImplementationOnce(() => spawnStub);
+      commandsModule.parseCommands.mockImplementationOnce(() => ({
+        dirPath: "./some-repo",
+        auditLevel: "moderate",
+      }));
+      prettyAudit({
+        dirPath: "./some-repo",
+        auditLevel: "moderate",
+      });
+
+      await prettyAudit.audit();
+
+      expect(childProcess.spawn).toHaveBeenCalledWith("npm", [
+        "audit",
+        "--json",
+        "--audit-level",
+        "moderate",
+        "--prefix",
+        "./some-repo",
+      ]);
+      expect(npmProcModule.resetPayload).toHaveBeenCalled();
+      expect(spawnStub.stdout.on).toHaveBeenCalledWith(
+        "data",
+        expect.toBeFunction()
+      );
+      expect(spawnStub.stderr.on).toHaveBeenCalledWith(
+        "data",
+        expect.toBeFunction()
+      );
+      expect(spawnStub.on).toHaveBeenCalledWith("close", expect.toBeFunction());
+    });
+
+    test("Should return error if npmProcModule on data throws", async () => {
+      jest.spyOn(childProcess, "spawn").mockImplementationOnce(() => spawnStub);
+      commandsModule.parseCommands.mockImplementationOnce(() => ({
+        dirPath: "./",
+        auditLevel: "",
+      }));
+      prettyAudit({
+        dirPath: "./",
+        auditLevel: "",
+      });
+      const errorToThrow = new Error("Failed on npm proc module data");
+      spawnStub.stderr.on.mockRejectedValueOnce(errorToThrow);
+      expect(prettyAudit.audit()).rejects.toEqual(errorToThrow);
+
+      expect(childProcess.spawn).toHaveBeenCalledWith("npm", [
+        "audit",
+        "--json",
+        "--prefix",
+        "./",
+      ]);
+      expect(spawnStub.stdout.on).toHaveBeenCalledWith(
+        "data",
+        expect.toBeFunction()
+      );
+      expect(spawnStub.stderr.on).toHaveBeenCalledWith(
+        "data",
+        expect.toBeFunction()
+      );
+      expect(spawnStub.on).toHaveBeenCalledWith("close", expect.toBeFunction());
+    });
+  });
 
   describe("prettyAudit", () => {
     beforeEach(() => {

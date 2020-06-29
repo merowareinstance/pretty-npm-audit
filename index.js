@@ -1,4 +1,4 @@
-const { spawn } = require("child_process");
+const childProcess = require("child_process");
 const { commandsModule, logger, npmProcModule } = require("./src/modules");
 
 const useConfig = {
@@ -13,7 +13,7 @@ function config() {
 }
 
 function audit() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let npmCommands = ["audit", "--json"];
 
     if (useConfig.auditLevel) {
@@ -24,31 +24,18 @@ function audit() {
       npmCommands = npmCommands.concat(["--prefix", useConfig.dirPath]);
     }
 
-    let payload = "";
-    const proc = spawn("npm", npmCommands);
+    const proc = childProcess.spawn("npm", npmCommands);
 
-    proc.stdout.on("data", (data) => {
-      try {
-        payload += npmProcModule.onData(data);
-      } catch (e) {
-        reject(e);
-      }
-    });
+    npmProcModule.resetPayload();
+    proc.stdout.on("data", (data) => npmProcModule.onData(data));
 
-    proc.stderr.on("data", (data) => {
-      try {
-        npmProcModule.onError(data, useConfig.dirPath);
-      } catch (e) {
-        reject(e);
-      }
-    });
+    proc.stderr.on("data", (data) =>
+      npmProcModule.onError(data, useConfig.dirPath)
+    );
 
     proc.on("close", async () => {
-      try {
-        resolve(npmProcModule.onClose(payload, useConfig));
-      } catch (e) {
-        reject(e);
-      }
+      await npmProcModule.onClose(useConfig);
+      resolve();
     });
   });
 }
