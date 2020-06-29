@@ -34,8 +34,7 @@ function audit() {
     );
 
     proc.on("close", async () => {
-      await npmProcModule.onClose(useConfig);
-      resolve();
+      resolve(npmProcModule.onClose(useConfig));
     });
   });
 }
