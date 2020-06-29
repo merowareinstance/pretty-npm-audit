@@ -30,6 +30,7 @@ switch (process.env.TEST_ENV) {
         "__tests__",
       ],
       coverageReporters: ["json", "text", "lcov", "clover"],
+      unmockedModulePathPatterns: ["table"],
     };
     break;
   case "integration":

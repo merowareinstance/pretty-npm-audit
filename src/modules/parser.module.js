@@ -143,4 +143,5 @@ function parse({ payload, sort, json, jsonPretty }) {
 
 module.exports = {
   parse,
+  buildTable,
 };

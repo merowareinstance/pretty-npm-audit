@@ -1,5 +1,5 @@
 const { spawn } = require("child_process");
-const { parserModule, commandsModule, logger } = require("./src/modules");
+const { commandsModule, logger, npmProcModule } = require("./src/modules");
 
 const useConfig = {
   dirPath: "./",
@@ -29,32 +29,25 @@ function audit() {
 
     proc.stdout.on("data", (data) => {
       try {
-        const dataToParse = data.toString().trim();
-        payload += dataToParse;
+        payload += npmProcModule.onData(data);
       } catch (e) {
-        reject(new Error("Could not convert partial data to string"));
+        reject(e);
       }
     });
 
     proc.stderr.on("data", (data) => {
-      logger.info(
-        `${data.toString().trim()} : Path provided ${useConfig.dirPath}`
-      );
-      reject(new Error("Received error while parsing npm audit"));
+      try {
+        npmProcModule.onError(data);
+      } catch (e) {
+        reject(e);
+      }
     });
 
     proc.on("close", async () => {
       try {
-        const completePayload = JSON.parse(payload);
-        const data = parserModule.parse({
-          payload: completePayload,
-          sort: useConfig.sort,
-          json: useConfig.json,
-          jsonPretty: useConfig.jsonPretty,
-        });
-        resolve(data);
+        resolve(npmProcModule.onClose(payload, useConfig));
       } catch (e) {
-        reject(new Error("Could not convert npm audit data"));
+        reject(e);
       }
     });
   });
@@ -65,7 +58,7 @@ function audit() {
  * @param  {...any} args
  */
 function prettyAudit(...args) {
-  if (args.length) {
+  if (args && args.length) {
     const [commands] = args;
     if (commands) {
       const {
