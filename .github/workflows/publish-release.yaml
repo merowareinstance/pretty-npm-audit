@@ -1,7 +1,27 @@
+name: CI
+on:
+  push:
+    branches-ignore:
+      - master
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run test
+
+
 name: Publish Release
 on:
   release:
-    types: [created]
+    types: 
+      - created
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -16,12 +36,12 @@ jobs:
   publish-npm:
     needs: ci
      steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
-        registry-url: https://registry.npmjs.org/
-    - run: npm ci
-    - run: npm publish
-      env: 
-        NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm publish
+        env: 
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
